@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">parkcar</string>
+    <string name="rssi_wifi" />
+</resources>
