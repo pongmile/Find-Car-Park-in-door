@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">parkcar</string>
-    <string name="rssi_wifi" />
+    <string name="app_name">My car park</string>
+    <string name="rssi_wifi"></string>
 </resources>
