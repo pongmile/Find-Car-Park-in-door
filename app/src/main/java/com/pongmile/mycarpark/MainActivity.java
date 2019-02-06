@@ -1,7 +1,6 @@
 package com.pongmile.mycarpark;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -31,15 +31,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG="WiFiDemo";
-    TextView rssiVie;
-    ListView res;
+    private static final String TAG = "WiFiDemo";
+    private Handler handler = new Handler();
+
     WifiManager wifiManager;
     WifiBroadcastReceiver wifiReceiver;
 
     TextView textView;
     Button btn;
-
 
 
     @Override
@@ -53,8 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED)
                 || (ContextCompat.checkSelfPermission(this, Manifest.permission.CHANGE_WIFI_STATE)
-                != PackageManager.PERMISSION_GRANTED))
-        {
+                != PackageManager.PERMISSION_GRANTED)) {
             Log.d(TAG, "Requesting permissions");
 
             //Request permission
@@ -65,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Manifest.permission.CHANGE_WIFI_STATE,
                             Manifest.permission.ACCESS_NETWORK_STATE},
                     123);
-        }
-        else
+        } else
             Log.d(TAG, "Permissions already granted");
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -78,29 +75,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn.setOnClickListener(this);
 
         //Instantiate broadcast receiver
+        textView.setText("");
         wifiReceiver = new WifiBroadcastReceiver();
+
+        handler.postDelayed(runnable,1000);
 
         //Register the receiver
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult");
 
-        switch (requestCode)
-        {
-            case 123:
-            {
+        switch (requestCode) {
+            case 123: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted
                     Log.d(TAG, "permission granted: " + permissions[0]);
-                }
-                else
-                {
+                } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Log.d(TAG, "permission denied: " + permissions[0]);
@@ -120,55 +114,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //Define class to listen to broadcasts
-    class WifiBroadcastReceiver extends BroadcastReceiver
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            Log.d(TAG, "onReceive()");
-            Toast.makeText(getApplicationContext(), "Scan complete!", Toast.LENGTH_SHORT).show();
 
-            boolean ok = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
-
-            if (ok)
-            {
-                Log.d(TAG, "scan OK");
-
-                //StringBuffer buffer = new StringBuffer();
-                List<ScanResult> list = wifiManager.getScanResults();
-
-                Toast.makeText(getApplicationContext(), Integer.toString(list.size()), Toast.LENGTH_SHORT).show();
-
-                for (ScanResult scanResult : list)
-                {
-                    //buffer.append(scanResult);
-                    textView.append(scanResult.SSID.toString()+" ");
-                    textView.append(String.valueOf(scanResult.level));
-                    textView.append("\n");
-                }
-            }
-            else
-                Log.d(TAG, "scan not OK");
-        }
-
-    }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         // TODO Auto-generated method stub
         unregisterReceiver(wifiReceiver);
         super.onStop();
     }
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
         // TODO Auto-generated method stub
         //Toast.makeText(getApplicationContext(), "All Network seached !!",0).show();
-        textView.setText("");
-        if(view.getId()==R.id.btn)
-        {
+
+        if (view.getId() == R.id.btn) {
             Log.d(TAG, "onCreate() wifi.startScan()");
 
             //if (!wifiManager.isWifiEnabled())
@@ -177,4 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             wifiManager.startScan();
         }
     }
+
+    private Runnable runnable = new Runnable(){
+        @Override
+        public void run() {
+            wifiManager.startScan();
+            handler.postDelayed(this, 1000);
+        }
+    };
+
 }
