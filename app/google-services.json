@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "494008185744",
+    "firebase_url": "https://wifi-car-park.firebaseio.com",
+    "project_id": "wifi-car-park",
+    "storage_bucket": "wifi-car-park.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494008185744:android:e4b6c59720bbb036",
+        "android_client_info": {
+          "package_name": "com.pongmile.mycarpark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494008185744-t9qs4vqgl5ocrm7nqb1tmo3p25d17ag3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pongmile.mycarpark",
+            "certificate_hash": "24d98834cbe08f2f866d0ed6510c40feab7ba1b4"
+          }
+        },
+        {
+          "client_id": "494008185744-l8n1p5d7vt68cq4p71va0r09mh3dj6g0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT1SrgriOzyMvtGn4ErRArF4CJxRF2-74"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494008185744-l8n1p5d7vt68cq4p71va0r09mh3dj6g0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

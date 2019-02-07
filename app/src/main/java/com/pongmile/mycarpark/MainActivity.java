@@ -23,10 +23,24 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,8 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WifiBroadcastReceiver wifiReceiver;
 
     TextView textView;
+    TextView mTextView;
     Button btn;
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+    DatabaseReference mwifiRef = myRef.child("wifi");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
+
 
         //Check for permissions
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -71,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView = findViewById(R.id.rssi_wifi);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
-        btn = findViewById(R.id.btn);
+        btn = findViewById(R.id.send);
         btn.setOnClickListener(this);
 
         //Instantiate broadcast receiver
@@ -82,6 +102,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Register the receiver
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+
+        mTextView = findViewById(R.id.rssi_sr);
+        myRef.addValueEventListener(new ValueEventListener()
+
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String wifi = ds.child("@KMITL").getValue(String.class);
+                    mTextView.setText("@KMITL "+wifi);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
     @Override
@@ -114,7 +153,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //Define class to listen to broadcasts
+    class WifiBroadcastReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            Log.d(TAG, "onReceive()");
 
+            boolean ok = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
+
+            if (ok)
+            {
+                Log.d(TAG, "scan OK");
+
+                //StringBuffer buffer = new StringBuffer();
+                List<ScanResult> list = wifiManager.getScanResults();
+
+                Toast.makeText(getApplicationContext(), Integer.toString(list.size()), Toast.LENGTH_SHORT).show();
+
+                for (ScanResult scanResult : list)
+                {
+                    //buffer.append(scanResult);
+                    textView.append(scanResult.SSID.toString()+" ");
+                    textView.append(String.valueOf(scanResult.level));
+                    textView.append("\n");
+                    mwifiRef.child(scanResult.SSID).setValue(String.valueOf(scanResult.level));
+                }
+            }
+            else
+                Log.d(TAG, "scan not OK");
+        }
+
+    }
 
     @Override
     protected void onStop() {
@@ -128,13 +198,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO Auto-generated method stub
         //Toast.makeText(getApplicationContext(), "All Network seached !!",0).show();
 
-        if (view.getId() == R.id.btn) {
+        if (view.getId() == R.id.send) {
             Log.d(TAG, "onCreate() wifi.startScan()");
 
             //if (!wifiManager.isWifiEnabled())
             //    wifiManager.setWifiEnabled(true);
-
             wifiManager.startScan();
+        }
+        if (view.getId() == R.id.receive) {
+            Log.d(TAG, "onCreate()");
+
+            //if (!wifiManager.isWifiEnabled())
+            //    wifiManager.setWifiEnabled(true);
+
+
         }
     }
 
