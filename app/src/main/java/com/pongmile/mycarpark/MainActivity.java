@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String wifi = ds.child("@KMITL").getValue(String.class);
-                    mTextView.setText("@KMITL "+wifi);
+                    String wifi1 = ds.child("KMITL_WIFI").getValue(String.class);
+                    mTextView.setText("@KMITL "+wifi+ "\n" +"KMITL_WIFI "+wifi1);
                 }
             }
 
