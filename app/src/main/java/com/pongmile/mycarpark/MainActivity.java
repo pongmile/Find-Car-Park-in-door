@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -111,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String wifi = ds.child("@KMITL").getValue(String.class);
-                    String wifi1 = ds.child("KMITL_WIFI").getValue(String.class);
-                    mTextView.setText("@KMITL "+wifi+ "\n" +"KMITL_WIFI "+wifi1);
+                    String wifi1 = ds.child("KMITL-WIFI").getValue(String.class);
+                    mTextView.setText("@KMITL "+wifi+ "\n" +"KMITL-WIFI "+wifi1);
                 }
             }
 
@@ -166,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (ok)
             {
                 Log.d(TAG, "scan OK");
+
+                textView.setText("");
 
                 //StringBuffer buffer = new StringBuffer();
                 List<ScanResult> list = wifiManager.getScanResults();
@@ -223,5 +226,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             handler.postDelayed(this, 1000);
         }
     };
+
 
 }
