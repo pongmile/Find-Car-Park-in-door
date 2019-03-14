@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">My car park</string>
     <string name="rssi_wifi"></string>
+
+    <string-array name="floor_arrays">
+        <item>Floor 1</item>
+        <item>Floor 2</item>
+        <item>Floor 3</item>
+    </string-array>
 </resources>
