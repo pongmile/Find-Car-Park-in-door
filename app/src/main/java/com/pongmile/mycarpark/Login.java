@@ -26,10 +26,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class Login extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
     SignInButton signIn;
     FirebaseAuth.AuthStateListener mAuthListener;
+    public String u_email;
 
 
     @Override
@@ -51,6 +52,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                u_email = user.getEmail();
                 if (user != null) {
                     // User is signed in
                     startActivity(new Intent(Login.this, MainActivity.class));
@@ -72,6 +74,10 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String getU_email() { ;
+        return u_email;
     }
 
     @Override

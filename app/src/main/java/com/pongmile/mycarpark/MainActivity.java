@@ -11,6 +11,7 @@ import android.net.wifi.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.pongmile.mycarpark.Login;
 
 import static android.content.ContentValues.TAG;
 
@@ -52,13 +55,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WifiManager wifiManager;
     WifiBroadcastReceiver wifiReceiver;
 
+    public String u_email;
     TextView textView;
     TextView mTextView;
     Button btn;
+    EditText license_p;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     DatabaseReference mwifiRef = myRef.child("wifi");
+    DatabaseReference mlicense = myRef.child("license");
+    FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +214,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //if (!wifiManager.isWifiEnabled())
             //    wifiManager.setWifiEnabled(true);
+
+
             wifiManager.startScan();
+
+            license_p = findViewById(R.id.license_plate);
+            String result = license_p.getText().toString();
+            
+            FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+
+            String currentString = user.getEmail();
+            String[] separated = currentString.split("\\.");
+
+            mlicense.child(separated[0]).setValue(result);
+
         }
         if (view.getId() == R.id.receive) {
             Log.d(TAG, "onCreate()");
