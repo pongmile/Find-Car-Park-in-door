@@ -1,10 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My car park</string>
-    <string name="rssi_wifi"></string>
+    <string name="app_name" translatable="false">My car park</string>
+    <string name="rssi_wifi" translatable="false"></string>
 
     <string-array name="floor_arrays">
         <item>Floor 1</item>
         <item>Floor 2</item>
         <item>Floor 3</item>
     </string-array>
+
+    <integer-array name="object_image">
+
+        <item>@drawable/capture</item>
+
+        <item>@drawable/imageedit</item>
+
+        <item>@drawable/vlcsnap</item>
+    </integer-array>
 </resources>

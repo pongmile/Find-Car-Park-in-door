@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -16,12 +18,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,16 +63,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WifiBroadcastReceiver wifiReceiver;
 
     public String u_email;
+    private String[] listOfObjects;
+    private TypedArray images;
+    private ImageView itemImage;
     TextView textView;
     TextView mTextView;
     Button btn;
     EditText license_p;
+    CountDownTimer cdt;
+    TextView tvTimer;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     DatabaseReference mwifiRef = myRef.child("wifi");
     DatabaseReference mlicense = myRef.child("license");
-    FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +85,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
+
+        images = getResources().obtainTypedArray(R.array.object_image);
+        listOfObjects = getResources().getStringArray(R.array.floor_arrays);
+        images = getResources().obtainTypedArray(R.array.object_image);
+        itemImage = findViewById(R.id.imageView);
+        final Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item, listOfObjects);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                itemImage.setImageResource(images.getResourceId(spinner.getSelectedItemPosition(), -1));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
 
         //Check for permissions
@@ -118,9 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String wifi = ds.child("@KMITL").getValue(String.class);
-                    String wifi1 = ds.child("KMITL-WIFI").getValue(String.class);
-                    mTextView.setText("@KMITL "+wifi+ "\n" +"KMITL-WIFI "+wifi1);
+                    String wifi1 = ds.child("@KMITL").getValue(String.class);
+                    String wifi2 = ds.child("KMITL-WIFI").getValue(String.class);
+                    String wifi3 = ds.child("ITFORGE_UFOx").getValue(String.class);
+                    String wifi4 = ds.child("K-ONE").getValue(String.class);
+                    mTextView.setText("@KMITL "+wifi1+ "\n" +"KMITL-WIFI "+wifi2+ "\n"+"ITFORGE_UFOx "+wifi3+ "\n"+"K-ONE "+wifi4);
                 }
             }
 
@@ -130,7 +161,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        tvTimer = (TextView)findViewById(R.id.tvTimer);
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -217,10 +251,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             wifiManager.startScan();
+            startTimer();
 
             license_p = findViewById(R.id.license_plate);
             String result = license_p.getText().toString();
-            
+
             FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
 
             String currentString = user.getEmail();
@@ -246,6 +281,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             handler.postDelayed(this, 1000);
         }
     };
+
+    public void startTimer(){
+        cdt = new CountDownTimer(900000, 50) {
+            @Override
+            public void onTick(long l) {
+                String strTime = String.format("%.1f", (double)l / 1000);
+                tvTimer.setText(String.valueOf(strTime));
+            }
+
+            @Override
+            public void onFinish() {
+                tvTimer.setText("0");
+            }
+        }.start();
+    }
 
 
 }
