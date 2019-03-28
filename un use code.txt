@@ -1,0 +1,34 @@
+        /*rssiVie = (TextView) findViewById(R.id.rssi_wifi);
+
+        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        // Level of a Scan Result
+        List<ScanResult> wifiList = wifi.getScanResults();
+        for (ScanResult scanResult : wifiList) {
+            int level = WifiManager.calculateSignalLevel(scanResult.level, 5);
+            rssiVie.setText("Level is " + level + " out of 5");
+        }
+
+
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        List<ScanResult> result0 =  wifiManager.getScanResults();
+        WifiInfo info = wifiManager.getConnectionInfo();
+        String ssid = info.getSSID();
+        int rssi = info.getRssi();
+        rssiVie = (TextView) findViewById(R.id.rssi_wifi);
+        res = (ListView) findViewById(R.id.list_rssi);
+        rssiVie.setText(ssid + rssi +"\n");*/
+/*
+        //rssiVie.setText((CharSequence) result0);
+        List<String> your_array_list = new ArrayList<String>();
+        your_array_list.add(String.valueOf(result0));
+
+        // This is the array adapter, it takes the context of the activity as a
+        // first parameter, the type of list view as a second parameter and your
+        // array as a third parameter.
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                your_array_list );
+
+        res.setAdapter(arrayAdapter);*/
