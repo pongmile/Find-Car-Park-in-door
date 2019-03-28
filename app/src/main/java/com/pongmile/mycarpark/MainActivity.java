@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onTick(long l) {
                 tvTimer.setText("0");
-                String strTime = String.format("%.1f", (double)l / 100);
+                String strTime = String.format("%.1f", (double)l / 1000);
                 tvTimer.setText(String.valueOf(strTime));
             }
 
