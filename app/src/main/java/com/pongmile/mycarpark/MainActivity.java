@@ -1,12 +1,18 @@
 package com.pongmile.mycarpark;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
 import android.os.Bundle;
@@ -15,6 +21,8 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,6 +60,7 @@ import java.util.Map;
 import com.pongmile.mycarpark.Login;
 
 import static android.content.ContentValues.TAG;
+import static android.provider.MediaStore.Files.FileColumns.TITLE;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -62,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WifiManager wifiManager;
     WifiBroadcastReceiver wifiReceiver;
 
-    public String u_email;
     private String[] listOfObjects;
     private TypedArray images;
     private ImageView itemImage;
@@ -222,7 +230,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     textView.append(scanResult.SSID.toString()+" ");
                     textView.append(String.valueOf(scanResult.level));
                     textView.append("\n");
-                    mwifiRef.child(scanResult.SSID).setValue(String.valueOf(scanResult.level));
+                    //BSSID = Mac address;
+                    mwifiRef.child(scanResult.BSSID).setValue(String.valueOf(scanResult.level));
                 }
             }
             else
@@ -263,6 +272,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             mlicense.child(separated[0]).setValue(result);
 
+            Notification notification =
+                    new NotificationCompat.Builder(this) // this is context
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Car Park")
+                            .setContentText("ใกล้หมดเวลาจอด")
+                            .setAutoCancel(true)
+                            .build();
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(1000, notification);
+
         }
         if (view.getId() == R.id.receive) {
             Log.d(TAG, "onCreate()");
@@ -283,10 +304,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     public void startTimer(){
-        cdt = new CountDownTimer(900000, 50) {
+        cdt = new CountDownTimer(9000, 50) {
             @Override
             public void onTick(long l) {
-                String strTime = String.format("%.1f", (double)l / 1000);
+                tvTimer.setText("0");
+                String strTime = String.format("%.1f", (double)l / 100);
                 tvTimer.setText(String.valueOf(strTime));
             }
 
@@ -296,6 +318,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }.start();
     }
-
 
 }

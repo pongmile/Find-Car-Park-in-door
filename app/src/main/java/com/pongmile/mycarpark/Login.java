@@ -76,10 +76,6 @@ public class Login extends AppCompatActivity {
 
     }
 
-    public String getU_email() { ;
-        return u_email;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
