@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">494008185744-l8n1p5d7vt68cq4p71va0r09mh3dj6g0.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://wifi-car-park.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">494008185744</string>
+    <string name="google_api_key" translatable="false">AIzaSyAT1SrgriOzyMvtGn4ErRArF4CJxRF2-74</string>
+    <string name="google_app_id" translatable="false">1:494008185744:android:e4b6c59720bbb036</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAT1SrgriOzyMvtGn4ErRArF4CJxRF2-74</string>
+    <string name="google_storage_bucket" translatable="false">wifi-car-park.appspot.com</string>
+    <string name="project_id" translatable="false">wifi-car-park</string>
+</resources>
