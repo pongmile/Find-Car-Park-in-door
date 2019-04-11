@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public String wifi4;
     public int centerX;
     public int centerY;
+    public double cal;
     private String[] listOfObjects;
     private TypedArray images;
     private ImageView itemImage;
@@ -286,17 +287,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             mlicense.child(separated[0]).setValue(result);*/
 
-            Random random = new Random();
-
-
-
             double cal_sq = (((-72 - (Integer.valueOf(wifi1))) ^ 2) + ((-71 - (Integer.valueOf(wifi2))) ^ 2) + ((-83 - (Integer.valueOf(wifi3))) ^ 2) + ((-61 - (Integer.valueOf(wifi4))) ^ 2));
-            double cal = Math.sqrt(cal_sq);
-            if (cal >= 0 && cal < 50) {
+            cal = Math.sqrt(cal_sq);
+            if (cal >= -50   && cal < 50) {
                 centerX = 100;
                 centerY = 200;
                 new Dot(centerX, centerY, 30, randomColor(), this);
             }
+            list_t.setText(String.valueOf(cal));
 
 
         }
@@ -318,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cdt = new CountDownTimer(9000, 50) {
             @Override
             public void onTick(long l) {
+                tvTimer.setText("0");
                 String strTime = String.format("%.1f", (double) l / 1000);
                 tvTimer.setText(String.valueOf(strTime));
             }

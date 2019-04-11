@@ -173,12 +173,15 @@
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        tools:layout_editor_absoluteX="176dp" />
+        app:layout_constraintEnd_toStartOf="@+id/rssi_sr"
+        app:layout_constraintStart_toEndOf="@+id/rssi_wifi"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 
 </android.support.constraint.ConstraintLayout>
