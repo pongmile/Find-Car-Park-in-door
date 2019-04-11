@@ -9,6 +9,7 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameLayout"
         android:layout_width="399dp"
         android:layout_height="286dp"
         android:layout_marginStart="8dp"
@@ -41,7 +42,7 @@
         <com.pongmile.view.Dotview
             android:id="@+id/dotView"
             android:layout_width="wrap_content"
-            android:layout_height="197dp"
+            android:layout_height="270dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -167,6 +168,17 @@
         app:layout_constraintStart_toEndOf="@+id/license_plate"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.644" />
+
+    <TextView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:layout_editor_absoluteX="176dp" />
 
 
 </android.support.constraint.ConstraintLayout>

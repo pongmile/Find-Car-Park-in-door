@@ -67,13 +67,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WifiManager wifiManager;
     WifiBroadcastReceiver wifiReceiver;
 
-    public String u_email;
+
+    public List<User> list = new ArrayList<>();
+    public String wifi1 = "";
+    public String wifi2;
+    public String wifi3;
+    public String wifi4;
+    public int centerX;
+    public int centerY;
     private String[] listOfObjects;
     private TypedArray images;
     private ImageView itemImage;
     private Dotview dotview;
     TextView textView;
     TextView mTextView;
+    TextView list_t;
     Button btn;
     EditText license_p;
     CountDownTimer cdt;
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         images = getResources().obtainTypedArray(R.array.object_image);
         itemImage = findViewById(R.id.imageView);
         final Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item, listOfObjects);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, listOfObjects);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -105,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemImage.setImageResource(images.getResourceId(spinner.getSelectedItemPosition(), -1));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -141,23 +150,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView.setText("");
         wifiReceiver = new WifiBroadcastReceiver();
 
-        handler.postDelayed(runnable,1000);
+        handler.postDelayed(runnable, 1000);
 
         //Register the receiver
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
         mTextView = findViewById(R.id.rssi_sr);
-        myRef.addValueEventListener(new ValueEventListener()
 
-        {
+        list_t = findViewById(R.id.list);
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String wifi1 = ds.child("@KMITL").getValue(String.class);
-                    String wifi2 = ds.child("KMITL-WIFI").getValue(String.class);
-                    String wifi3 = ds.child("ITFORGE_UFOx").getValue(String.class);
-                    String wifi4 = ds.child("K-ONE").getValue(String.class);
-                    mTextView.setText("@KMITL "+wifi1+ "\n" +"KMITL-WIFI "+wifi2+ "\n"+"ITFORGE_UFOx "+wifi3+ "\n"+"K-ONE "+wifi4);
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    wifi1 = ds.child("5c:54:6d:33:df:90").getValue(String.class);
+                    wifi2 = ds.child("5c:54:6d:33:df:91").getValue(String.class);
+                    wifi3 = ds.child("26:a4:3c:63:f1:86").getValue(String.class);
+                    wifi4 = ds.child("5c:54:6d:33:df:84").getValue(String.class);
+                    mTextView.setText("@KMITL " + wifi1 + "\n" + "KMITL-WIFI " + wifi2 + "\n" + "ITFORGE_UFOx " + wifi3 + "\n" + "K-ONE " + wifi4);
+                    User user = ds.getValue(User.class);
+                    list.add(user);
+                }
+                for (int i = 0; i < list.size(); i++) {
 
                 }
             }
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        tvTimer = (TextView)findViewById(R.id.tvTimer);
+        tvTimer = (TextView) findViewById(R.id.tvTimer);
 
 
         dotview = (Dotview) findViewById(R.id.dotView);
@@ -207,19 +220,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     //Define class to listen to broadcasts
-    class WifiBroadcastReceiver extends BroadcastReceiver
-    {
+    class WifiBroadcastReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive()");
 
             boolean ok = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
 
-            if (ok)
-            {
+            if (ok) {
                 Log.d(TAG, "scan OK");
 
                 textView.setText("");
@@ -229,17 +238,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 Toast.makeText(getApplicationContext(), Integer.toString(list.size()), Toast.LENGTH_SHORT).show();
 
-                for (ScanResult scanResult : list)
-                {
+                for (ScanResult scanResult : list) {
                     //buffer.append(scanResult);
-                    textView.append(scanResult.SSID.toString()+" ");
+                    textView.append(scanResult.SSID.toString() + " ");
+                    textView.append(scanResult.BSSID.toString() + " ");
                     textView.append(String.valueOf(scanResult.level));
                     textView.append("\n");
-                    mwifiRef.child(scanResult.SSID).setValue(String.valueOf(scanResult.level));
+                    mwifiRef.child(scanResult.BSSID).setValue(String.valueOf(scanResult.level));
 
                 }
-            }
-            else
+            } else
                 Log.d(TAG, "scan not OK");
         }
 
@@ -263,6 +271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //if (!wifiManager.isWifiEnabled())
             //    wifiManager.setWifiEnabled(true);
 
+            //list_t.setText(wifi1);
 
             wifiManager.startScan();
             startTimer();
@@ -270,61 +279,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             license_p = findViewById(R.id.license_plate);
             String result = license_p.getText().toString();
 
-            FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-            String currentString = user.getEmail();
+            /*String currentString = user.getEmail();
             String[] separated = currentString.split("\\.");
 
-            mlicense.child(separated[0]).setValue(result);
+            mlicense.child(separated[0]).setValue(result);*/
 
             Random random = new Random();
-           /* int centerX = random.nextInt(dotview.getWidth());
-            int centerY = random.nextInt(dotview.getHeight());*/
 
 
-            List<ScanResult> list = wifiManager.getScanResults();
 
-            for (ScanResult scanResult : list)
-            {
-
-                if (scanResult.SSID == "@KMITL") {
-                    String wifi1 = scanResult.SSID;
-
-                    if (scanResult.SSID == "KMITL-WIFI") {
-                        String wifi2 = scanResult.SSID;
-
-                        if (scanResult.SSID == "ITFORGE_UFOx") {
-                            String wifi3 = scanResult.SSID;
-
-                            if (scanResult.SSID == "K-ONE") {
-                                String wifi4 = scanResult.SSID;
-
-                                double cal_sq = (((-93-(Integer.valueOf(wifi1)))^2)+((-93-(Integer.valueOf(wifi2)))^2)+((-83-(Integer.valueOf(wifi3)))^2)+((-93-(Integer.valueOf(wifi4)))^2));
-                                double cal = Math.sqrt(cal_sq);
-
-                                if(cal >= 0 && cal < 5){
-                                    int centerX = 100;
-                                    int centerY = 200;
-                                    new Dot(centerX, centerY, 30, randomColor(), this);
-                                }}}}}
-
-
+            double cal_sq = (((-72 - (Integer.valueOf(wifi1))) ^ 2) + ((-71 - (Integer.valueOf(wifi2))) ^ 2) + ((-83 - (Integer.valueOf(wifi3))) ^ 2) + ((-61 - (Integer.valueOf(wifi4))) ^ 2));
+            double cal = Math.sqrt(cal_sq);
+            if (cal >= 0 && cal < 50) {
+                centerX = 100;
+                centerY = 200;
+                new Dot(centerX, centerY, 30, randomColor(), this);
             }
-
 
 
         }
         if (view.getId() == R.id.receive) {
+            stopTimer();
             Log.d(TAG, "onCreate()");
-
-            //if (!wifiManager.isWifiEnabled())
-            //    wifiManager.setWifiEnabled(true);
-
-
         }
     }
 
-    private Runnable runnable = new Runnable(){
+    private Runnable runnable = new Runnable() {
         @Override
         public void run() {
             wifiManager.startScan();
@@ -332,11 +314,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
-    public void startTimer(){
-        cdt = new CountDownTimer(900000, 50) {
+    public void startTimer() {
+        cdt = new CountDownTimer(9000, 50) {
             @Override
             public void onTick(long l) {
-                String strTime = String.format("%.1f", (double)l / 1000);
+                String strTime = String.format("%.1f", (double) l / 1000);
                 tvTimer.setText(String.valueOf(strTime));
             }
 
@@ -345,6 +327,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTimer.setText("0");
             }
         }.start();
+    }
+
+    public void stopTimer() {
+        tvTimer.setText("0");
     }
 
     private int randomColor() {
