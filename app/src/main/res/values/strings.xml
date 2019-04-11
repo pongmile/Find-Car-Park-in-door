@@ -13,7 +13,7 @@
 
         <item>@drawable/capture</item>
 
-        <item>@drawable/imageedit</item>
+        <item>@drawable/cap</item>
 
         <item>@drawable/vlcsnap</item>
     </integer-array>

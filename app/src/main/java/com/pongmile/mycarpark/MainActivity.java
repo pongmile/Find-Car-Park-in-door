@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
 import android.os.Bundle;
@@ -49,12 +50,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import com.pongmile.model.Dot;
 import com.pongmile.mycarpark.Login;
+import com.pongmile.view.Dotview;
 
 import static android.content.ContentValues.TAG;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Dot.OnDotChangedListener {
 
     private static final String TAG = "WiFiDemo";
     private Handler handler = new Handler();
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] listOfObjects;
     private TypedArray images;
     private ImageView itemImage;
+    private Dotview dotview;
     TextView textView;
     TextView mTextView;
     Button btn;
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String wifi3 = ds.child("ITFORGE_UFOx").getValue(String.class);
                     String wifi4 = ds.child("K-ONE").getValue(String.class);
                     mTextView.setText("@KMITL "+wifi1+ "\n" +"KMITL-WIFI "+wifi2+ "\n"+"ITFORGE_UFOx "+wifi3+ "\n"+"K-ONE "+wifi4);
+
                 }
             }
 
@@ -162,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         tvTimer = (TextView)findViewById(R.id.tvTimer);
+
+
+        dotview = (Dotview) findViewById(R.id.dotView);
+        //dotview.setOnTouchListener((View.OnTouchListener) this);
 
     }
 
@@ -195,6 +206,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+
     //Define class to listen to broadcasts
     class WifiBroadcastReceiver extends BroadcastReceiver
     {
@@ -223,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     textView.append(String.valueOf(scanResult.level));
                     textView.append("\n");
                     mwifiRef.child(scanResult.SSID).setValue(String.valueOf(scanResult.level));
+
                 }
             }
             else
@@ -263,6 +277,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             mlicense.child(separated[0]).setValue(result);
 
+            Random random = new Random();
+           /* int centerX = random.nextInt(dotview.getWidth());
+            int centerY = random.nextInt(dotview.getHeight());*/
+
+
+            List<ScanResult> list = wifiManager.getScanResults();
+
+            for (ScanResult scanResult : list)
+            {
+
+                if (scanResult.SSID == "@KMITL") {
+                    String wifi1 = scanResult.SSID;
+
+                    if (scanResult.SSID == "KMITL-WIFI") {
+                        String wifi2 = scanResult.SSID;
+
+                        if (scanResult.SSID == "ITFORGE_UFOx") {
+                            String wifi3 = scanResult.SSID;
+
+                            if (scanResult.SSID == "K-ONE") {
+                                String wifi4 = scanResult.SSID;
+
+                                double cal_sq = (((-93-(Integer.valueOf(wifi1)))^2)+((-93-(Integer.valueOf(wifi2)))^2)+((-83-(Integer.valueOf(wifi3)))^2)+((-93-(Integer.valueOf(wifi4)))^2));
+                                double cal = Math.sqrt(cal_sq);
+
+                                if(cal == 0){
+                                    int centerX = 100;
+                                    int centerY = 200;
+                                    new Dot(centerX, centerY, 30, randomColor(), this);
+                                }}}}}
+
+
+            }
+
+
+
         }
         if (view.getId() == R.id.receive) {
             Log.d(TAG, "onCreate()");
@@ -295,6 +345,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTimer.setText("0");
             }
         }.start();
+    }
+
+    private int randomColor() {
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    @Override
+    public void onDotChanged(Dot dot) {
+
+        dotview.addDot(dot);
+        dotview.invalidate();
     }
 
 
