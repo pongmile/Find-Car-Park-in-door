@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 double cal_sq = (((-93-(Integer.valueOf(wifi1)))^2)+((-93-(Integer.valueOf(wifi2)))^2)+((-83-(Integer.valueOf(wifi3)))^2)+((-93-(Integer.valueOf(wifi4)))^2));
                                 double cal = Math.sqrt(cal_sq);
 
-                                if(cal == 0){
+                                if(cal >= 0 && cal < 5){
                                     int centerX = 100;
                                     int centerY = 200;
                                     new Dot(centerX, centerY, 30, randomColor(), this);
