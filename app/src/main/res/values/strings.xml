@@ -9,12 +9,9 @@
         <item>Floor 3</item>
     </string-array>
 
-    <integer-array name="object_image">
-
+    <integer-array name="floor_image">
         <item>@drawable/capture</item>
-
         <item>@drawable/cap</item>
-
         <item>@drawable/vlcsnap</item>
     </integer-array>
 </resources>

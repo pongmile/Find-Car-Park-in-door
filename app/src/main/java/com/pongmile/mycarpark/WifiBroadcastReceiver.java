@@ -33,9 +33,9 @@ public class WifiBroadcastReceiver extends MainActivity {
 
                 for (ScanResult scanResult : list) {
                     //buffer.append(scanResult);
-                    textView.append(scanResult.SSID.toString() + " ");
-                    textView.append(String.valueOf(scanResult.level));
-                    textView.append("\n");
+                    show_rssi.append(scanResult.SSID.toString() + " ");
+                    show_rssi.append(String.valueOf(scanResult.level));
+                    show_rssi.append("\n");
                 }
             } else
                 Log.d(TAG, "scan not OK");
