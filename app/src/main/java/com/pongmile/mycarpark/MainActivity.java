@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
                         cal = Math.sqrt(cal_sq);
                         wifi_cal.add(cal);
-                        test_calculate.setText(String.valueOf(cal));
+                        //test_calculate.setText(String.valueOf(cal));
                     }
                     else if (i == 2){
                         show_ssid1 = separated[0];
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     where_me =  wifi_cal_sq;
                     bef = wifi_cal_sq;
                 }
-                //test_calculate.setText(String.valueOf(wifi_cal.get(0)+String.valueOf((wifi_cal.get(1)+String.valueOf((wifi_cal.get(2)+String.valueOf((wifi_cal.get(3)))))))));
+                test_calculate.setText(String.valueOf(wifi_cal_sq));
             }
             for (int a = 0; a < wifi_cal.size(); a++){
                 centerX = 100;
