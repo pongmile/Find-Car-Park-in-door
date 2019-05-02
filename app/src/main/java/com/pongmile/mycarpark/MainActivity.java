@@ -70,14 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public List<User> list = new ArrayList<>();
     public ArrayList<Double> wifi_cal = new ArrayList<>();
-    public String wifi1 = "0";
-    public String wifi2 = "0";
-    public String wifi3 = "0";
-    public String wifi4 = "0";
-    public String ssid1 = "";
-    public String ssid2 = "";
-    public String ssid3 = "";
-    public String ssid4 = "";
+    public String wifi1 = "-8";
+    public String wifi2 = "-65";
+    public String wifi3 = "-60";
+    public String wifi4 = "-71";
+    public String ssid1 = "-8";
+    public String ssid2 = "-62";
+    public String ssid3 = "-57";
+    public String ssid4 = "-71";
     public String show_ssid1 = "";
     public String show_ssid2 = "";
     public String show_ssid3 = "";
@@ -203,79 +203,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         show_ssid2 = separated[2];
                         show_ssid3 = separated[4];
                         show_ssid4 = separated[6];
-                        ssid1 = show_ssid1; //Best_wifi
-                        ssid2 = show_ssid2;
-                        ssid3 = show_ssid3;
-                        ssid4 = show_ssid4;
                         valueSsid1 = Integer.valueOf(separated[1]);
                         valueSsid2 = Integer.valueOf(separated[3]);
                         valueSsid3 = Integer.valueOf(separated[5]);
                         valueSsid4 = Integer.valueOf(separated[7]);
                         double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
+                        cal_sq = cal_sq*-1;
                         cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal_sq);
+                        cal = cal*-1;
+                        wifi_cal.add(cal);
                     }
                     else if (i == 2){
                         show_ssid1 = separated[0];
                         show_ssid2 = separated[2];
                         show_ssid3 = separated[4];
                         show_ssid4 = separated[6];
-                        ssid1 = show_ssid1; //Best_wifi
-                        ssid2 = show_ssid2;
-                        ssid3 = show_ssid3;
-                        ssid4 = show_ssid4;
                         valueSsid1 = Integer.valueOf(separated[1]);
                         valueSsid2 = Integer.valueOf(separated[3]);
                         valueSsid3 = Integer.valueOf(separated[5]);
                         valueSsid4 = Integer.valueOf(separated[7]);
                         double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
+                        cal_sq = cal_sq*-1;
                         cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal_sq);
+                        cal = cal*-1;
+                        wifi_cal.add(cal);
                     }
                     else if (i == 3){
                         show_ssid1 = separated[0];
                         show_ssid2 = separated[2];
                         show_ssid3 = separated[4];
                         show_ssid4 = separated[6];
-                        ssid1 = show_ssid1; //Best_wifi
-                        ssid2 = show_ssid2;
-                        ssid3 = show_ssid3;
-                        ssid4 = show_ssid4;
                         valueSsid1 = Integer.valueOf(separated[1]);
                         valueSsid2 = Integer.valueOf(separated[3]);
                         valueSsid3 = Integer.valueOf(separated[5]);
                         valueSsid4 = Integer.valueOf(separated[7]);
                         double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
+                        cal_sq = cal_sq*-1;
                         cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal_sq);
+                        cal = cal*-1;
+                        wifi_cal.add(cal);
                     }
                     else if (i == 4){
                         show_ssid1 = separated[0];
                         show_ssid2 = separated[2];
                         show_ssid3 = separated[4];
                         show_ssid4 = separated[6];
-                        ssid1 = show_ssid1; //Best_wifi
-                        ssid2 = show_ssid2;
-                        ssid3 = show_ssid3;
-                        ssid4 = show_ssid4;
                         valueSsid1 = Integer.valueOf(separated[1]);
                         valueSsid2 = Integer.valueOf(separated[3]);
                         valueSsid3 = Integer.valueOf(separated[5]);
                         valueSsid4 = Integer.valueOf(separated[7]);
-
                         double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
+                        cal_sq = cal_sq*-1;
                         cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal_sq);
-
+                        cal = cal*-1;
+                        wifi_cal.add(cal);
                     }
-                    valueSsid1 = 0;
-                    valueSsid2 = 0;
-                    valueSsid3 = 0;
-                    valueSsid4 = 0;
-                    /*if (cal >= -30 && cal < 30) {
-                        centerX = 100;
-                        centerY = 200;
-                    }*/
                 }
 
             }
@@ -290,12 +272,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    wifi1 = ds.child(ssid1).getValue(String.class);
+                    /*wifi1 = ds.child(ssid1).getValue(String.class);
                     wifi2 = ds.child(ssid2).getValue(String.class);
                     wifi3 = ds.child(ssid3).getValue(String.class);
-                    wifi4 = ds.child(ssid4).getValue(String.class);
+                    wifi4 = ds.child(ssid4).getValue(String.class);*/
                     pin_rssi.setText(show_ssid1+ " " + valueSsid1 + "\n" + show_ssid2+ " " + valueSsid2 + "\n" + show_ssid3+ " " + valueSsid3 + "\n" + show_ssid4+ " " + valueSsid4);
-
                     User user = ds.getValue(User.class);
                     list.add(user);
                 }
@@ -415,8 +396,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(wifi_cal_sq >= bef) {
                     where_me =  wifi_cal_sq;
                     bef = wifi_cal_sq;
-                    test_calculate.setText(String.valueOf(wifi_cal_sq));
                 }
+                test_calculate.setText(String.valueOf(wifi_cal.get(0)+String.valueOf((wifi_cal.get(1)+String.valueOf((wifi_cal.get(2)+String.valueOf((wifi_cal.get(3)))))))));
             }
             for (int a = 0; a < wifi_cal.size(); a++){
                 centerX = 100;
