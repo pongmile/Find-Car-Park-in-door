@@ -54,12 +54,11 @@ public class Dotview extends View {
         dots = new ArrayList<>();
     }
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         listener.onTouch(this, event);
-
         return super.onTouchEvent(event);
-    }
+    }*/
 
     public void addDot(Dot dot) {
         dots.add(dot);

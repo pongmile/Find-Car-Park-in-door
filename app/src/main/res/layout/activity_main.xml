@@ -6,56 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.pongmile.mycarpark.MainActivity">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/frameLayout"
-        android:layout_width="399dp"
-        android:layout_height="286dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        tools:context="com.pongmile.mycarpark.MainActivity">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="368dp"
-            android:layout_height="271dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.49"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.403"
-            app:srcCompat="@drawable/capture" />
-
-        <com.pongmile.view.Dotview
-            android:id="@+id/dotView"
-            android:layout_width="wrap_content"
-            android:layout_height="270dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.393" />
-
-    </FrameLayout>
-
     <TextView
         android:id="@+id/rssi_wifi"
         android:layout_width="wrap_content"
@@ -71,6 +21,23 @@
         app:layout_constraintVertical_bias="0.201"
         tools:text="googel" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="400dp"
+        android:layout_height="381dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:scrollHorizontally="true"
+        app:layout_constraintBottom_toTopOf="@+id/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/floor_s"
+        app:layout_constraintVertical_bias="0.196"
+        app:srcCompat="@drawable/capture" />
+
     <Button
         android:id="@+id/send"
         android:layout_width="212dp"
@@ -79,29 +46,16 @@
         android:layout_marginTop="264dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_btn_bfpark"
+        android:fontFamily="@font/sukhumvitset_bold"
         android:text="PARK"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
-
-    <Button
-        android:id="@+id/receive"
-        android:layout_width="138dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="receive"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send"
-        app:layout_constraintVertical_bias="0.992" />
+        app:layout_constraintVertical_bias="0.978" />
 
     <TextView
         android:id="@+id/rssi_sr"
@@ -112,6 +66,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="rssi_ser"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +82,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:entries="@array/floor_arrays"
+        android:theme="@style/SpinnerTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -135,39 +91,41 @@
 
     <EditText
         android:id="@+id/license_plate"
-        android:layout_width="159dp"
-        android:layout_height="49dp"
+        android:layout_width="168dp"
+        android:layout_height="62dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:fontFamily="@font/sukhumvitset_text"
         android:inputType="textPersonName"
         android:text="license plate"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.63" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/tvTimer"
-        android:layout_width="111dp"
-        android:layout_height="51dp"
+        android:layout_width="114dp"
+        android:layout_height="62dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="68dp"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/sukhumvitset_text"
         android:text="0"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/license_plate"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.644" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/list"
@@ -178,6 +136,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toStartOf="@+id/rssi_sr"
         app:layout_constraintStart_toEndOf="@+id/rssi_wifi"
@@ -190,9 +149,50 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <ImageView
+        android:id="@+id/dotbf"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/pin_bfpark"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="160dp" />
+
+    <ImageView
+        android:id="@+id/dotImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/pinplaceholder"
+        tools:layout_editor_absoluteX="65dp"
+        tools:layout_editor_absoluteY="178dp" />
+
+    <ImageView
+        android:id="@+id/dotaf"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/pin_afpark"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="49dp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/license_plate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.823"
+        app:srcCompat="@drawable/line_carpark" />
 
 
 </android.support.constraint.ConstraintLayout>

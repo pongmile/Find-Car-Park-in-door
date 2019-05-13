@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
@@ -96,12 +99,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] list_floor;
     private TypedArray images_floor;
     private ImageView imageShowScreen;
+    private ImageView dotImage;
+    private ImageView dotBf;
+    private ImageView dotAf;
     private Dotview dotview;
     TextView show_rssi;
     TextView pin_rssi;
     TextView test_calculate;
     Button btn;
+    int click_time = 0;
+    int isPark = 0;
     EditText license_p;
+    EditText time_edit;
     CountDownTimer cdt;
     TextView tvTimer;
 
@@ -126,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list_floor = getResources().getStringArray(R.array.floor_arrays);
         imageShowScreen = findViewById(R.id.imageView);
         final Spinner spinner = findViewById(R.id.spinner);
+
+        dotImage = findViewById(R.id.dotImage);
+        dotBf = findViewById(R.id.dotbf);
+        dotAf = findViewById(R.id.dotaf);
+
         ArrayAdapter<String> spinner_floor = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, list_floor);
         spinner_floor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinner_floor);
@@ -136,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (position) {
                     case 0:
                         floor_int = "floor1";
+                        ssid1 = "64:13:6c:02:05:cc";
+                        ssid2 = "00:4a:77:45:b8:fc";
+                        ssid3 = "ac:85:3d:ef:3f:48";
+                        ssid4 = "84:9f:b5:5b:6a:bc";
                         break;
                     case 1:
                         floor_int = "floor2";
@@ -198,59 +216,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int i = 1; i < 5; i++) {
                     String currentString = dataSnapshot.child(floor_int).child("wifi_num"+i).getValue(String.class);
                     String[] separated = currentString.split(" ");
-                    if (i == 1){
-                        show_ssid1 = separated[0];
-                        show_ssid2 = separated[2];
-                        show_ssid3 = separated[4];
-                        show_ssid4 = separated[6];
-                        valueSsid1 = Integer.valueOf(separated[1]);
-                        valueSsid2 = Integer.valueOf(separated[3]);
-                        valueSsid3 = Integer.valueOf(separated[5]);
-                        valueSsid4 = Integer.valueOf(separated[7]);
-                        double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
-                        cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal);
-                        //test_calculate.setText(String.valueOf(cal));
-                    }
-                    else if (i == 2){
-                        show_ssid1 = separated[0];
-                        show_ssid2 = separated[2];
-                        show_ssid3 = separated[4];
-                        show_ssid4 = separated[6];
-                        valueSsid1 = Integer.valueOf(separated[1]);
-                        valueSsid2 = Integer.valueOf(separated[3]);
-                        valueSsid3 = Integer.valueOf(separated[5]);
-                        valueSsid4 = Integer.valueOf(separated[7]);
-                        double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
-                        cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal);
-                    }
-                    else if (i == 3){
-                        show_ssid1 = separated[0];
-                        show_ssid2 = separated[2];
-                        show_ssid3 = separated[4];
-                        show_ssid4 = separated[6];
-                        valueSsid1 = Integer.valueOf(separated[1]);
-                        valueSsid2 = Integer.valueOf(separated[3]);
-                        valueSsid3 = Integer.valueOf(separated[5]);
-                        valueSsid4 = Integer.valueOf(separated[7]);
-                        double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
-                        cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal);
-                    }
-                    else if (i == 4){
-                        show_ssid1 = separated[0];
-                        show_ssid2 = separated[2];
-                        show_ssid3 = separated[4];
-                        show_ssid4 = separated[6];
-                        valueSsid1 = Integer.valueOf(separated[1]);
-                        valueSsid2 = Integer.valueOf(separated[3]);
-                        valueSsid3 = Integer.valueOf(separated[5]);
-                        valueSsid4 = Integer.valueOf(separated[7]);
-                        double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
-                        cal = Math.sqrt(cal_sq);
-                        wifi_cal.add(cal);
-                    }
+                    show_ssid1 = separated[0];
+                    show_ssid2 = separated[2];
+                    show_ssid3 = separated[4];
+                    show_ssid4 = separated[6];
+                    valueSsid1 = Integer.valueOf(separated[1]);
+                    valueSsid2 = Integer.valueOf(separated[3]);
+                    valueSsid3 = Integer.valueOf(separated[5]);
+                    valueSsid4 = Integer.valueOf(separated[7]);
+                    double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
+                    cal = Math.sqrt(cal_sq);
+                    wifi_cal.add(cal);
                 }
 
             }
@@ -265,10 +241,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    /*wifi1 = ds.child(ssid1).getValue(String.class);
+                    wifi1 = ds.child(ssid1).getValue(String.class);
                     wifi2 = ds.child(ssid2).getValue(String.class);
                     wifi3 = ds.child(ssid3).getValue(String.class);
-                    wifi4 = ds.child(ssid4).getValue(String.class);*/
+                    wifi4 = ds.child(ssid4).getValue(String.class);
                     pin_rssi.setText(show_ssid1+ " " + valueSsid1 + "\n" + show_ssid2+ " " + valueSsid2 + "\n" + show_ssid3+ " " + valueSsid3 + "\n" + show_ssid4+ " " + valueSsid4);
                     User user = ds.getValue(User.class);
                     list.add(user);
@@ -280,14 +256,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
         tvTimer = (TextView) findViewById(R.id.tvTimer);
-
-
-        dotview = (Dotview) findViewById(R.id.dotView);
+        //dotview = (Dotview) findViewById(R.id.dotView);
         //dotview.setOnTouchListener((View.OnTouchListener) this);
-
-
     }
 
 
@@ -368,15 +339,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.send) {
             Log.d(TAG, "onCreate() wifi.startScan()");
 
-            //if (!wifiManager.isWifiEnabled())
-            //    wifiManager.setWifiEnabled(true);
-
-            //test_calculate.setText(wifi1);
-
             wifiManager.startScan();
-            startTimer();
+            if (click_time == 0){
+                startTimer();
+                click_time = 1;
+                btn.setText("finish");
+                btn.setBackgroundResource(R.drawable.bg_btn_finishpark);
+                dotBf.setVisibility(View.VISIBLE);
+                dotAf.setVisibility(View.INVISIBLE);
+                tvTimer.setVisibility(View.VISIBLE);
+                time_edit.setVisibility(View.INVISIBLE);
+
+            }
+            else{
+                stopTimer();
+                click_time = 0;
+                btn.setText("park");
+                btn.setBackgroundResource(R.drawable.bg_btn_bfpark);
+                dotAf.setVisibility(View.VISIBLE);
+                dotBf.setVisibility(View.INVISIBLE);
+                tvTimer.setVisibility(View.INVISIBLE);
+                time_edit.setVisibility(View.VISIBLE);
+            }
+
 
             license_p = findViewById(R.id.license_plate);
+            time_edit = view.findViewById(R.id.editTime);
+            String timer_ = time_edit.getText().toString();
             String result = license_p.getText().toString();
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -396,15 +385,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 centerX = 100;
                 centerY = 200;
             }
-            new Dot(centerX, centerY, 30, randomColor(), this);
+            int[] array = new int[2];
+            imageShowScreen.getLocationOnScreen(array);
+            dotAf.setX(array[0]+400);
+            dotAf.setY(array[1]+200);
+            dotBf.setX(array[0]+400);
+            dotBf.setY(array[1]+200);
+
+            //new Dot(centerX, centerY, 30, randomColor(), this);
 
 
 
 
-        }
-        if (view.getId() == R.id.receive) {
-            stopTimer();
-            Log.d(TAG, "onCreate()");
         }
     }
 
@@ -421,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onTick(long l) {
                 tvTimer.setText("0");
-                String strTime = String.format("%.1f", (double) l / 1000);
+                String strTime = String.format("%.2f", (double) l/1000);
                 tvTimer.setText(String.valueOf(strTime));
             }
 
@@ -434,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void stopTimer() {
         tvTimer.setText("0");
+        cdt.cancel();
     }
 
     private int randomColor() {
@@ -441,11 +434,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
+
     @Override
     public void onDotChanged(Dot dot) {
 
-        dotview.addDot(dot);
-        dotview.invalidate();
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+
+        Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.bg_tellwherepark);
+        canvas.drawBitmap(map, 100, 200,null);
+
+        Bitmap marker = BitmapFactory.decodeResource(getResources(), R.drawable.bg_btn_bfpark);
+        canvas.drawBitmap(marker, 100, 500, null);
     }
 
 

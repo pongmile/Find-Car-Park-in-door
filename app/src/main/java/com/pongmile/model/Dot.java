@@ -1,9 +1,13 @@
 package com.pongmile.model;
 
+import android.graphics.Canvas;
+
 public class Dot {
 
     public interface OnDotChangedListener {
         void onDotChanged(Dot dot);
+
+        void onDraw(Canvas canvas);
     }
 
     private OnDotChangedListener listener;

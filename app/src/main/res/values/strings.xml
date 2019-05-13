@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">My car park</string>
+    <string name="app_name" translatable="false">CAR PARK POSITIONING SYSTEM</string>
     <string name="rssi_wifi" translatable="false"></string>
 
     <string-array name="floor_arrays">

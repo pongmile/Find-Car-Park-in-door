@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "494008185744-r9dupgeigc8rqhpej1lu96349j84qs6h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pongmile.mycarpark",
+            "certificate_hash": "706a0a88a618067ce1f9d7445e3112d804dcf972"
+          }
+        },
+        {
           "client_id": "494008185744-t9qs4vqgl5ocrm7nqb1tmo3p25d17ag3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "494008185744-l8n1p5d7vt68cq4p71va0r09mh3dj6g0.apps.googleusercontent.com",
+              "client_id": "494008185744-ea7645i4tc3c26jg734poorfmuum4ar5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
