@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name" translatable="false">CAR PARK POSITIONING SYSTEM</string>
     <string name="rssi_wifi" translatable="false"></string>
+    <string name="channel_name">Car Park</string>
+    <string name="channel_description">Notifications Car Park</string>
 
     <string-array name="floor_arrays">
         <item>Floor 1</item>

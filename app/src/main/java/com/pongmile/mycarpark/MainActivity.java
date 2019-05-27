@@ -1,6 +1,10 @@
 package com.pongmile.mycarpark;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +15,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -131,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseApp.initializeApp(this);
         test_calculate = findViewById(R.id.list);
 
+        createNotificationChannel();
 
         images_floor = getResources().obtainTypedArray(R.array.floor_image);
         list_floor = getResources().getStringArray(R.array.floor_arrays);
@@ -341,6 +349,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         time_edit = findViewById(R.id.editTime);
         timer_ = Integer.valueOf(time_edit.getText().toString());
         String result = license_p.getText().toString();
+        sendNotification(view);
 
         if (view.getId() == R.id.send) {
             Log.d(TAG, "onCreate() wifi.startScan()");
@@ -396,10 +405,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dotBf.setY(array[1]+200);
 
             //new Dot(centerX, centerY, 30, randomColor(), this);
-
-
-
-
         }
     }
 
@@ -419,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tvTimer.setText("0");
                 String strTime = String.format("%.2f", (double) l/1000);
                 tvTimer.setText(String.valueOf(strTime));
+
             }
 
             @Override
@@ -452,6 +458,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Bitmap marker = BitmapFactory.decodeResource(getResources(), R.drawable.bg_btn_bfpark);
         canvas.drawBitmap(marker, 100, 500, null);
+    }
+    public void sendNotification(View view) {
+        Context context = MainActivity.this;
+        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.logo_app);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Car Park WiFi")
+                .setSmallIcon(R.drawable.logo_app)
+                .setContentTitle("Car park")
+                .setContentText("Less then 15 min!!")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("Less then 15 min!!"))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1000, builder.build());
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("Car Park WiFi", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 }
