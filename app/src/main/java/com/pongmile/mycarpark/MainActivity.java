@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText time_edit;
     CountDownTimer cdt;
     TextView tvTimer;
+    int timer_;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -336,6 +337,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // TODO Auto-generated method stub
         //Toast.makeText(getApplicationContext(), "All Network seached !!",0).show();
 
+        license_p = findViewById(R.id.license_plate);
+        time_edit = findViewById(R.id.editTime);
+        timer_ = Integer.valueOf(time_edit.getText().toString());
+        String result = license_p.getText().toString();
+
         if (view.getId() == R.id.send) {
             Log.d(TAG, "onCreate() wifi.startScan()");
 
@@ -363,10 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
 
-            license_p = findViewById(R.id.license_plate);
-            time_edit = view.findViewById(R.id.editTime);
-            String timer_ = time_edit.getText().toString();
-            String result = license_p.getText().toString();
+
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             String currentString = user.getEmail();
@@ -409,7 +412,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     public void startTimer() {
-        cdt = new CountDownTimer(9000, 50) {
+        timer_ = timer_*1000;
+        cdt = new CountDownTimer(timer_, 50) {
             @Override
             public void onTick(long l) {
                 tvTimer.setText("0");
@@ -449,6 +453,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap marker = BitmapFactory.decodeResource(getResources(), R.drawable.bg_btn_bfpark);
         canvas.drawBitmap(marker, 100, 500, null);
     }
-
 
 }
