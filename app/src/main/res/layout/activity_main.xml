@@ -66,13 +66,16 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="rssi_ser"
-        android:visibility="invisible"
+        android:fontFamily="@font/sukhumvitset_bold"
+        android:text="@string/rssi_wifi"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintTop_toBottomOf="@+id/license_plate" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -92,8 +95,8 @@
 
     <EditText
         android:id="@+id/license_plate"
-        android:layout_width="168dp"
-        android:layout_height="62dp"
+        android:layout_width="169dp"
+        android:layout_height="49dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -109,26 +112,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <EditText
-        android:id="@+id/editTime"
-        android:layout_width="168dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:fontFamily="@font/sukhumvitset_text"
-        android:inputType="textPersonName"
-        android:text="Time"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.964"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
     <TextView
         android:id="@+id/tvTimer"
         android:layout_width="114dp"
@@ -141,7 +124,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/sukhumvitset_text"
         android:text="0"
-        android:textSize="40sp"
+        android:textSize="36sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +166,7 @@
         android:visibility="invisible"
         app:srcCompat="@drawable/pin_bfpark"
         tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="160dp" />
+        tools:layout_editor_absoluteY="77dp" />
 
     <ImageView
         android:id="@+id/dotImage"
@@ -191,8 +174,8 @@
         android:layout_height="40dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/pinplaceholder"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="178dp" />
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="77dp" />
 
     <ImageView
         android:id="@+id/dotaf"
@@ -200,8 +183,8 @@
         android:layout_height="40dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/pin_afpark"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="49dp" />
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="79dp" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -215,6 +198,40 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.823"
         app:srcCompat="@drawable/line_carpark" />
+
+    <EditText
+        android:id="@+id/editTime"
+        android:layout_width="168dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:fontFamily="@font/sukhumvitset_text"
+        android:inputType="number"
+        android:text="0"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.964"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/timer_total"
+        android:layout_width="168dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/sukhumvitset_text"
+        android:text="@string/time_total"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/rssi_sr"
+        app:layout_constraintEnd_toStartOf="@+id/rssi_sr"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rssi_sr" />
 
 
 </android.support.constraint.ConstraintLayout>

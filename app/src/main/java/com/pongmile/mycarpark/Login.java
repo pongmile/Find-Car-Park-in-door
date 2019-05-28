@@ -55,10 +55,9 @@ public class Login extends AppCompatActivity {
                 u_email = user.getEmail();
                 if (user != null) {
                     // User is signed in
-                    startActivity(new Intent(Login.this, MainActivity.class));
+                    startActivity(new Intent(Login.this, license.class));
                 } else {
                     // User is signed out
-
                 }
                 // ...
             }
@@ -127,7 +126,7 @@ public class Login extends AppCompatActivity {
     }
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            Intent i = new Intent(getApplicationContext(),license.class);
             startActivity(i);
             finish();
         } else {

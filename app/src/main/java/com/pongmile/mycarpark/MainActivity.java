@@ -56,7 +56,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +70,7 @@ import com.pongmile.mycarpark.Login;
 import com.pongmile.view.Dotview;
 
 import static android.content.ContentValues.TAG;
+import static java.lang.Math.random;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Dot.OnDotChangedListener {
@@ -116,11 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn;
     int click_time = 0;
     int isPark = 0;
+    int setXpark = 635;
+    int setYpark = 700;
     EditText license_p;
     EditText time_edit;
     CountDownTimer cdt;
     TextView tvTimer;
     int timer_;
+    int count_noti = 1;
+    TextView rssi_sr;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -166,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case 1:
                         floor_int = "floor2";
+
                         break;
                     case 2:
                         floor_int = "floor3";
@@ -214,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Register the receiver
         registerReceiver(wifiReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
-        pin_rssi = findViewById(R.id.rssi_sr);
         test_text = findViewById(R.id.floor_s);
         test_calculate = findViewById(R.id.list);
 
@@ -233,9 +241,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     valueSsid2 = Integer.valueOf(separated[3]);
                     valueSsid3 = Integer.valueOf(separated[5]);
                     valueSsid4 = Integer.valueOf(separated[7]);
-                    double cal_sq = (((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2));
-                    cal = Math.sqrt(cal_sq);
-                    wifi_cal.add(cal);
+                    double cal_sq = Math.sqrt((((valueSsid1 - Integer.valueOf(wifi1)) ^ 2) + ((valueSsid2 - Integer.valueOf(wifi2)) ^ 2) + ((valueSsid3 - Integer.valueOf(wifi3)) ^ 2) + ((valueSsid4 - Integer.valueOf(wifi4)) ^ 2)));
+                    wifi_cal.add(Math.sqrt(cal_sq));
                 }
 
             }
@@ -254,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     wifi2 = ds.child(ssid2).getValue(String.class);
                     wifi3 = ds.child(ssid3).getValue(String.class);
                     wifi4 = ds.child(ssid4).getValue(String.class);
-                    pin_rssi.setText(show_ssid1+ " " + valueSsid1 + "\n" + show_ssid2+ " " + valueSsid2 + "\n" + show_ssid3+ " " + valueSsid3 + "\n" + show_ssid4+ " " + valueSsid4);
+                    //pin_rssi.setText(show_ssid1+ " " + valueSsid1 + "\n" + show_ssid2+ " " + valueSsid2 + "\n" + show_ssid3+ " " + valueSsid3 + "\n" + show_ssid4+ " " + valueSsid4);
                     User user = ds.getValue(User.class);
                     list.add(user);
                 }
@@ -349,10 +356,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         time_edit = findViewById(R.id.editTime);
         timer_ = Integer.valueOf(time_edit.getText().toString());
         String result = license_p.getText().toString();
-        sendNotification(view);
 
         if (view.getId() == R.id.send) {
             Log.d(TAG, "onCreate() wifi.startScan()");
+
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+            String formattedDate = df.format(c.getTime());
+
+            int click_che = 1;
+            int are_date = 0;
 
             wifiManager.startScan();
             if (click_time == 0){
@@ -364,6 +377,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dotAf.setVisibility(View.INVISIBLE);
                 tvTimer.setVisibility(View.VISIBLE);
                 time_edit.setVisibility(View.INVISIBLE);
+                if(are_date == 0){
+                    rssi_sr.setText(formattedDate);
+                    are_date = 1;
+                }
+                if(click_che == 1){
+                    setXpark += 38;
+                }
+                if(click_che == 2){
+                    setXpark += 38;
+                }
+                if(click_che == 3){
+                    setXpark += 38;
+                }
+                if(click_che == 4){
+                    setXpark += 38;
+                    click_che = 1;
+                }
 
             }
             else{
@@ -375,10 +405,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dotBf.setVisibility(View.INVISIBLE);
                 tvTimer.setVisibility(View.INVISIBLE);
                 time_edit.setVisibility(View.VISIBLE);
+                if(click_che == 1){
+                    click_che = 2;
+                }
+                if(click_che == 2){
+                    click_che = 3;
+                }
+                if(click_che == 3){
+                    click_che = 4;
+                }
+                if(click_che == 0){
+                    setXpark = 670;
+                }
             }
-
-
-
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             String currentString = user.getEmail();
@@ -399,10 +438,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             int[] array = new int[2];
             imageShowScreen.getLocationOnScreen(array);
-            dotAf.setX(array[0]+400);
-            dotAf.setY(array[1]+200);
-            dotBf.setX(array[0]+400);
-            dotBf.setY(array[1]+200);
+
+
+            dotAf.setX(setXpark);
+            dotAf.setY(setYpark);
+            dotBf.setX(setXpark);
+            dotBf.setY(setYpark);
 
             //new Dot(centerX, centerY, 30, randomColor(), this);
         }
@@ -418,13 +459,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void startTimer() {
         timer_ = timer_*1000;
+        count_noti = 1;
         cdt = new CountDownTimer(timer_, 50) {
             @Override
             public void onTick(long l) {
                 tvTimer.setText("0");
                 String strTime = String.format("%.2f", (double) l/1000);
                 tvTimer.setText(String.valueOf(strTime));
-
+                if((Double.valueOf(strTime) < 60) && (count_noti == 1)){
+                    sendNotification();
+                    count_noti = 0;
+                }
             }
 
             @Override
@@ -439,11 +484,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cdt.cancel();
     }
 
-    private int randomColor() {
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
+    @Override
+    public void onStart() {
+        super.onStart();
 
+
+        rssi_sr = findViewById(R.id.rssi_sr);
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String currentString = user.getEmail();
+        String[] separated = currentString.split("\\.");
+
+        DatabaseReference myRef = database.getReference("license").child(separated[0]);
+
+        license_p = findViewById(R.id.license_plate);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                license_p.setText(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        rssi_sr.setText(formattedDate);
+
+    }
 
     @Override
     public void onDotChanged(Dot dot) {
@@ -459,9 +537,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap marker = BitmapFactory.decodeResource(getResources(), R.drawable.bg_btn_bfpark);
         canvas.drawBitmap(marker, 100, 500, null);
     }
-    public void sendNotification(View view) {
+    public void sendNotification() {
         Context context = MainActivity.this;
-        int color = ContextCompat.getColor(context, R.color.colorPrimary);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.logo_app);
 

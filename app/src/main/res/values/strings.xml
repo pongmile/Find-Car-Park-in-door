@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">CAR PARK POSITIONING SYSTEM</string>
-    <string name="rssi_wifi" translatable="false"></string>
+    <string name="time_total" translatable="false">เวลาาเริ่มจอด</string>
     <string name="channel_name">Car Park</string>
     <string name="channel_description">Notifications Car Park</string>
+    <string name="rssi_wifi" translatable="false">Time total</string>
 
     <string-array name="floor_arrays">
-        <item>Floor 1</item>
-        <item>Floor 2</item>
-        <item>Floor 3</item>
+        <item>คณะเทคโนโลยีสารสนเทศ ชั้น 1</item>
+        <item>คณะเทคโนโลยีสารสนเทศ ใต้อาคาร</item>
+        <item>คณะเทคโนโลยีสารสนเทศ ด้านข้างอาคาร</item>
     </string-array>
 
     <integer-array name="floor_image">
